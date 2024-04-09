@@ -1,0 +1,22 @@
+zerops:
+  - setup: nodejs20
+    build:
+      base: nodejs@20
+      prepareCommands:
+        - npm install -g typescript
+      buildCommands:
+        - |
+          cd nodejs
+          export NODE_ENV=development
+          npm i
+          npm run build
+      deploy:
+        - ./nodejs/~/dist
+        - ./nodejs/~/node_modules
+        - ./nodejs/~/package.json
+    run:
+      start: npm run start:prod
+      healthCheck:
+        httpGet:
+          port: 3000
+          path: /status
